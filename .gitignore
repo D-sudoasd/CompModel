@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Local tooling / IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Analysis outputs (keep directory README only)
+results/**
+!results/README.md
+
+# Raw backups (runtime R libs live under cte_app/data/r_libraries/)
+raw_sources/**
+!raw_sources/README.md
+
+# Local experiment dumps
+*.xlsx
+!sample_data/**
+raw_sources/zte/
+
+# OS / desktop clutter
+MOVE_LOG_tidy.csv
+desktop.ini
+
+# Local env
+.env
+.env.*

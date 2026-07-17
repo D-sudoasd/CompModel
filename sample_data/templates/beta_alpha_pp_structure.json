@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "settings": {
+    "project_name": "β-Ti + α″ structure template (XRD)",
+    "temperature_mode": "constant",
+    "microstructure": "spherical_particles",
+    "measurement_direction": "isotropic_average",
+    "interface_state": "perfect_bonding",
+    "porosity": 0.0,
+    "alpha_display_unit": "1e-6/K",
+    "display_sig_figs": 3
+  },
+  "phase1": {
+    "phase_name": "β-Ti",
+    "crystal_system": "cubic",
+    "role": "matrix",
+    "volume_fraction": 0.6,
+    "Young_modulus_E": 45.0,
+    "Poisson_ratio_nu": 0.33,
+    "modulus_unit": "GPa",
+    "temperature_min": 20.0,
+    "temperature_max": 300.0,
+    "r_factor_definition": "theoretical_relative_intensity",
+    "use_direct_scalar_cte": false,
+    "direct_alpha": null,
+    "plane_rows": [
+      {
+        "h": 1, "k": 1, "l": 0,
+        "plane_family_label": "(1 1 0)β",
+        "alpha_hkl": 4.5,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 0.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": "structure template — replace peak_area and alpha with your measurement"
+      },
+      {
+        "h": 2, "k": 0, "l": 0,
+        "plane_family_label": "(2 0 0)β",
+        "alpha_hkl": 0.0,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 0.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": ""
+      },
+      {
+        "h": 2, "k": 1, "l": 1,
+        "plane_family_label": "(2 1 1)β",
+        "alpha_hkl": 0.0,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 0.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": ""
+      }
+    ]
+  },
+  "phase2": {
+    "phase_name": "α″",
+    "crystal_system": "orthorhombic",
+    "role": "inclusion",
+    "volume_fraction": 0.4,
+    "Young_modulus_E": 60.0,
+    "Poisson_ratio_nu": 0.33,
+    "modulus_unit": "GPa",
+    "temperature_min": 20.0,
+    "temperature_max": 300.0,
+    "r_factor_definition": "theoretical_relative_intensity",
+    "use_direct_scalar_cte": false,
+    "direct_alpha": null,
+    "plane_rows": [
+      {
+        "h": 0, "k": 2, "l": 0,
+        "plane_family_label": "(0 2 0)α\"",
+        "alpha_hkl": 0.0,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 0.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": "structure template — fill measured alpha and peak area; then 填充 R"
+      },
+      {
+        "h": 1, "k": 1, "l": 1,
+        "plane_family_label": "(1 1 1)α\"",
+        "alpha_hkl": 0.0,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 0.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": ""
+      },
+      {
+        "h": 0, "k": 2, "l": 1,
+        "plane_family_label": "(0 2 1)α\"",
+        "alpha_hkl": 0.0,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 0.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": ""
+      }
+    ]
+  }
+}

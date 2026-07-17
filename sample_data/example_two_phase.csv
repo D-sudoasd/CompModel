@@ -1,0 +1,5 @@
+phase,h,k,l,plane_family_label,alpha_hkl,alpha_unit,peak_area,R_factor,enabled,volume_fraction,role,E_GPa,nu
+Matrix-Al,1,1,1,(111),23.0,1e-6/K,100.0,1.0,true,0.7,matrix,70.0,0.33
+Matrix-Al,2,0,0,(200),22.0,1e-6/K,80.0,0.8,true,0.7,matrix,70.0,0.33
+Inclusion-SiC,1,1,1,(111),4.5,1e-6/K,90.0,1.0,true,0.3,inclusion,400.0,0.17
+Inclusion-SiC,2,2,0,(220),4.3,1e-6/K,70.0,0.9,true,0.3,inclusion,400.0,0.17

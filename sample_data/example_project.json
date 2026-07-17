@@ -1,0 +1,91 @@
+{
+  "settings": {
+    "project_name": "Al-SiC Hand-Check Example",
+    "temperature_mode": "constant",
+    "microstructure": "spherical_particles",
+    "measurement_direction": "isotropic_average",
+    "interface_state": "perfect_bonding",
+    "porosity": 0.0,
+    "alpha_display_unit": "1e-6/K",
+    "display_sig_figs": 3
+  },
+  "phase1": {
+    "phase_name": "Matrix-Al",
+    "crystal_system": "cubic",
+    "role": "matrix",
+    "volume_fraction": 0.7,
+    "Young_modulus_E": 70.0,
+    "Poisson_ratio_nu": 0.33,
+    "modulus_unit": "GPa",
+    "temperature_min": 20.0,
+    "temperature_max": 300.0,
+    "r_factor_definition": "theoretical_relative_intensity",
+    "use_direct_scalar_cte": false,
+    "plane_rows": [
+      {
+        "h": 1, "k": 1, "l": 1,
+        "plane_family_label": "(111)",
+        "alpha_hkl": 23.0,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 100.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": ""
+      },
+      {
+        "h": 2, "k": 0, "l": 0,
+        "plane_family_label": "(200)",
+        "alpha_hkl": 22.0,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 80.0,
+        "R_factor": 0.8,
+        "enabled": true,
+        "notes": ""
+      }
+    ]
+  },
+  "phase2": {
+    "phase_name": "Inclusion-SiC",
+    "crystal_system": "cubic",
+    "role": "inclusion",
+    "volume_fraction": 0.3,
+    "Young_modulus_E": 400.0,
+    "Poisson_ratio_nu": 0.17,
+    "modulus_unit": "GPa",
+    "temperature_min": 20.0,
+    "temperature_max": 300.0,
+    "r_factor_definition": "theoretical_relative_intensity",
+    "use_direct_scalar_cte": false,
+    "plane_rows": [
+      {
+        "h": 1, "k": 1, "l": 1,
+        "plane_family_label": "(111)",
+        "alpha_hkl": 4.5,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 90.0,
+        "R_factor": 1.0,
+        "enabled": true,
+        "notes": ""
+      },
+      {
+        "h": 2, "k": 2, "l": 0,
+        "plane_family_label": "(220)",
+        "alpha_hkl": 4.3,
+        "alpha_unit": "1e-6/K",
+        "peak_area": 70.0,
+        "R_factor": 0.9,
+        "enabled": true,
+        "notes": ""
+      }
+    ]
+  },
+  "hand_check_notes": {
+    "phase1_corrected_I": "100/1 + 80/0.8 = 100 + 100 = 200",
+    "phase1_weights": "0.5, 0.5",
+    "phase1_alpha_e6": "0.5*23 + 0.5*22 = 22.5",
+    "phase2_corrected_I": "90/1 + 70/0.9 = 90 + 77.777... = 167.777...",
+    "phase2_weights": "90/167.777..., 77.777.../167.777...",
+    "phase2_alpha_e6": "approx 4.416",
+    "rom_e6": "0.7*22.5 + 0.3*alpha2"
+  }
+}

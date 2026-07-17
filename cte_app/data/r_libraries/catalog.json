@@ -1,0 +1,23 @@
+{
+  "beta_ti_no_lp": {
+    "label": "β-Ti · R_no_LP（峰位_R / beta-Ti.cif）",
+    "phase_hint": "beta",
+    "file": "r_beta_Ti_no_LP.csv",
+    "r_column": "R_hkl_no_LP",
+    "description": "R_hkl_no_LP from CIF2Peaks beta-Ti; use with LP-corrected integrated areas"
+  },
+  "alpha_shuffle_58": {
+    "label": "α″ · Shuffle-58（Rietveld/F²）",
+    "phase_hint": "alpha_pp",
+    "file": "r_alpha_shuffle_58.csv",
+    "r_column": "R_hkl_no_LP",
+    "description": "From R_for_shuffle_58.csv"
+  },
+  "alpha_shuffle_73": {
+    "label": "α″ · Shuffle-73（CrystalShift）",
+    "phase_hint": "alpha_pp",
+    "file": "r_alpha_shuffle_73.csv",
+    "r_column": "R_hkl_no_LP",
+    "description": "From R_for_shuflle_73.csv"
+  }
+}

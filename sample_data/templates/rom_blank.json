@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "settings": {
+    "project_name": "ROM blank (structure template)",
+    "temperature_mode": "constant",
+    "microstructure": "unknown",
+    "measurement_direction": "isotropic_average",
+    "interface_state": "perfect_bonding",
+    "porosity": 0.0,
+    "alpha_display_unit": "1e-6/K",
+    "display_sig_figs": 3
+  },
+  "phase1": {
+    "phase_name": "相1",
+    "crystal_system": "unknown",
+    "role": "matrix",
+    "volume_fraction": 0.5,
+    "Young_modulus_E": null,
+    "Poisson_ratio_nu": null,
+    "modulus_unit": "GPa",
+    "temperature_min": 20.0,
+    "temperature_max": 300.0,
+    "r_factor_definition": "theoretical_relative_intensity",
+    "use_direct_scalar_cte": true,
+    "direct_alpha": 10.0,
+    "direct_alpha_unit": "1e-6/K",
+    "plane_rows": []
+  },
+  "phase2": {
+    "phase_name": "相2",
+    "crystal_system": "unknown",
+    "role": "inclusion",
+    "volume_fraction": 0.5,
+    "Young_modulus_E": null,
+    "Poisson_ratio_nu": null,
+    "modulus_unit": "GPa",
+    "temperature_min": 20.0,
+    "temperature_max": 300.0,
+    "r_factor_definition": "theoretical_relative_intensity",
+    "use_direct_scalar_cte": true,
+    "direct_alpha": 5.0,
+    "direct_alpha_unit": "1e-6/K",
+    "plane_rows": []
+  }
+}
