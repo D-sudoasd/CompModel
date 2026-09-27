@@ -1,4 +1,41 @@
+<p align="center">
+  <img src="assets/readme/hero.png" width="100%" alt="CompModel — Compare effective-property models for multiphase composites / 比较多相复合材料的有效性能模型. Conceptual illustration / 概念插图。">
+</p>
+
 # CompModel
+
+**Compare effective-property models for multiphase composites**
+
+**比较多相复合材料的有效性能模型**
+
+[Overview / 项目概览](#overview--项目概览) · [Start / 开始使用](#start--开始使用) · [Reference / 详细说明](#reference--详细说明)
+
+## Overview / 项目概览
+
+Start from constituent properties, fractions and explicit morphology assumptions to compare elastic, thermal and transport properties. Explore composition and reuse selected effective properties in a documented hierarchy.
+
+从组成相属性、比例与明确形貌假设出发，比较弹性、热学与输运性能，探索组成影响，并在保留来源记录的分级模型中复用所选有效性能。
+
+- **Multiple material properties** — 支持弹性、CTE、导热、导电、密度、比热与自定义标量。
+- **Model comparison** — 并列检查混合规则、上下界及球形夹杂模型。
+- **Reusable projects** — 保存工程、组成扫描与分级均匀化来源。
+
+## Start / 开始使用
+
+```powershell
+py -3 -m pip install -r requirements.txt
+py -3 -m streamlit run app.py
+```
+
+[Quick start / 快速开始](docs/00_QUICKSTART.md) · [Models / 模型说明](docs/effective_properties.md)
+
+Current models are scalar or isotropic analytical approximations. The original CTE/XRD workflow remains available; actual agglomerate geometry and finite-element RVE are outside the implemented scope.
+
+当前模型为标量或各向同性解析近似；原 CTE/XRD 流程继续保留，真实团聚形貌与有限元 RVE 尚未实现。
+
+*Cover: AI-generated conceptual illustration. 封面为 AI 生成的概念插图。*
+
+## Reference / 详细说明
 
 **Composite Effective Properties Modeling**
 **多相复合材料有效性能建模 · 原 CompCTE**
