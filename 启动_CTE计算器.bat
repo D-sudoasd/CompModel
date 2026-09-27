@@ -1,11 +1,11 @@
 @echo off
 chcp 65001 >nul
-title Two-Phase Composite CTE Calculator
+title CompModel
 cd /d "%~dp0"
 
 echo ============================================
-echo   两相复合材料 CTE 计算器
-echo   Two-Phase Composite CTE Calculator
+echo   CompModel 复合材料有效性能建模
+echo   Composite Effective Properties
 echo ============================================
 echo.
 echo 工作目录: %CD%

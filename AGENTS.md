@@ -1,10 +1,10 @@
 # AGENTS.md — 协作者与 AI 工作约定
 
-**项目公开名：CompCTE**（仓库 / 品牌短名 `compcte`）。内部计算包仍为 `cte_app`。
+**项目公开名：CompModel**（原 CompCTE）。仓库和发行包暂保留 `compcte`，内部计算包仍为 `cte_app`。
 
 ## 这是什么
 
-两相复合材料 **CTE** 本地计算器：Streamlit UI + `cte_app` 纯计算库。  
+多相复合材料有效性能建模：Streamlit UI + `cte_app` 纯计算库；保留两相 CTE / XRD 工作流。
 面向材料科研；结果必须可解释，禁止静默选“唯一真值”。
 
 ## 必读
@@ -13,6 +13,7 @@
 2. `docs/00_QUICKSTART.md` — 用户操作  
 3. `docs/PROJECT_MAP.md` — 目录  
 4. `docs/model_assumptions.md` — 科学假设  
+5. `docs/effective_properties.md` — 多相模型、单位、公式与适用范围
 
 ## 架构边界
 
@@ -38,7 +39,8 @@ py -3 -m pytest -q
 
 - 内部单位：CTE → 1/K，模量 → Pa；界面显示 10⁻⁶/K、GPa  
 - R 默认定义：`corrected_intensity = peak_area / R`  
-- 体积分数约束：f₁+f₂=1；勿把质量分数当体积分数  
+- 体积分数约束：Σfᵢ=1；质量分数必须通过密度显式换算
+- 新多相模型在 `homogenization.py`，工程、扫描和分级均匀化在 `composite_project.py`
 - Kerner 必须显式 matrix/inclusion  
 - 中文用户回复；代码标识符保持英文  
 

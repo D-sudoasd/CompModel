@@ -1513,13 +1513,205 @@ def render_sidebar() -> tuple[str, int]:
     return str(alpha_unit), int(sig_figs)
 
 
+def render_modeling_workbench() -> None:
+    """Multiphase UI; computation and interchange live in the core package."""
+    from cte_app.composite_project import (
+        analysis_settings, apply_table_edits, demo_project, display_rows, display_sweep, editor_rows, effective_phase,
+        from_editor, json_bytes, load_project, project_dict, report_dict, sweep,
+    )
+    from cte_app.homogenization import Composite, Constituent, FAMILIES, PROPERTIES, HomogenizationError
+
+    st.title("CompModel · 复合材料有效性能建模")
+    st.caption("多相组成 → 选择物理量 → 比较模型与边界 → 扫描配比 / 分级均匀化")
+    st.session_state.setdefault("hm_base", demo_project())
+    st.session_state.setdefault("hm_revision", 0)
+    st.session_state.setdefault("hm_library", [])
+    st.session_state.setdefault("hm_rows", editor_rows(st.session_state.hm_base))
+    st.session_state.setdefault("hm_table_revision", 0)
+    st.session_state.setdefault("hm_custom_name_value", st.session_state.hm_base.custom_name)
+    st.session_state.setdefault("hm_custom_unit_value", st.session_state.hm_base.custom_unit)
+    st.session_state.setdefault("hm_xi_value", 2.0)
+
+    def install(project):
+        st.session_state.hm_base = project
+        st.session_state.hm_rows = editor_rows(project)
+        st.session_state.hm_revision += 1
+        st.session_state.hm_table_revision += 1
+        st.session_state.hm_custom_name_value = project.custom_name
+        st.session_state.hm_custom_unit_value = project.custom_unit
+        st.session_state.pop("hm_report", None)
+        st.session_state.pop("hm_sweep", None)
+        st.rerun()
+
+    with st.sidebar:
+        st.subheader("多相工程")
+        upload = st.file_uploader("导入 CompModel JSON", type=["json"], key="hm_upload")
+        if st.button("载入工程", disabled=upload is None):
+            try:
+                data = json.loads(upload.getvalue())
+                project = load_project(data)
+                settings = analysis_settings(data)
+                if settings:
+                    st.session_state.hm_family = settings["family"]
+                    st.session_state.hm_xi = settings["xi"]
+                    st.session_state.hm_xi_value = settings["xi"]
+                install(project)
+            except (ValueError, UnicodeError) as exc:
+                st.error(str(exc))
+        if st.button("载入教学示例"):
+            install(demo_project())
+        st.caption("示例数值仅用于演示，不是经验证的材料数据库。旧工程使用上方 CTE / XRD 页面。")
+        with st.expander("已保存的有效相", expanded=True):
+            library = st.session_state.hm_library
+            if library:
+                selected = st.selectbox("选择有效相", range(len(library)), format_func=lambda i: library[i].name)
+                st.json(library[selected].properties)
+                st.caption("仅保存所选模型输出的属性；下一层需要的其他属性须另行填写。")
+                if st.button("以此相建立下一层"):
+                    from copy import deepcopy
+                    phase = deepcopy(library[selected])
+                    phase.fraction = 0.5
+                    phase.role = "unspecified"
+                    other_name = "新组成相" if phase.name != "新组成相" else "新组成相 2"
+                    install(Composite([phase, Constituent(other_name, 0.5)], title=f"{phase.name} 的下一层复合材料",
+                                      custom_name=phase.provenance["project"]["custom_name"],
+                                      custom_unit=phase.provenance["project"]["custom_unit"]))
+            else:
+                st.caption("计算后显式选择一个模型，保存其结果供下一层使用。")
+        with st.expander("模型说明与参考依据"):
+            doc = Path(__file__).resolve().parent / "docs" / "effective_properties.md"
+            if doc.exists():
+                st.markdown(doc.read_text(encoding="utf-8"))
+
+    base = st.session_state.hm_base
+    rev = st.session_state.hm_revision
+    title = st.text_input("工程名称", base.title, key=f"hm_title_{rev}")
+    c1, c2 = st.columns(2)
+    with c1:
+        family = st.selectbox("建模物理量", list(FAMILIES), format_func=FAMILIES.get, key="hm_family")
+    with c2:
+        basis = st.selectbox("输入分数类型", ["volume", "mass"], index=0 if base.basis == "volume" else 1,
+                             format_func=lambda x: "体积分数" if x == "volume" else "质量分数（需要各相密度）", key=f"hm_basis_{rev}")
+    custom_name = st.session_state.hm_custom_name_value
+    custom_unit = st.session_state.hm_custom_unit_value
+    if family == "custom":
+        c1, c2 = st.columns(2)
+        custom_name = c1.text_input("系数名称", custom_name, key=f"hm_custom_name_{rev}")
+        custom_unit = c2.text_input("系数单位（各相必须一致）", custom_unit, key=f"hm_custom_unit_{rev}")
+        st.session_state.hm_custom_name_value = custom_name
+        st.session_state.hm_custom_unit_value = custom_unit
+        st.info("自定义系数提供算术、调和、几何混合规则。压电、热电等耦合系数不能仅凭标量平均得到完整有效响应。")
+    fields = {"elastic": ["E", "nu", "K", "G"], "alpha": ["alpha", "E", "nu", "K", "G"],
+              "k": ["k"], "sigma": ["sigma"], "thermal": ["rho", "cp"], "custom": ["custom"]}[family]
+    if basis == "mass" and "rho" not in fields:
+        fields = fields + ["rho"]
+    st.subheader("组成相与属性")
+    st.caption("可增删任意相。分数之和必须为 1；留空表示未知，0 表示真实零值。弹性输入 E+ν 或 K+G。各相参数应对应同一温度和测量条件。")
+    show_all = st.checkbox("显示全部物理量列", key="hm_show_all")
+    configs = {
+        "name": st.column_config.TextColumn("相名称", required=True),
+        "fraction": st.column_config.NumberColumn("组成分数", min_value=0., max_value=1., format="%.6f", required=True),
+        "role": st.column_config.SelectboxColumn("角色", options=["unspecified", "matrix", "inclusion"], default="unspecified"),
+        **{key: st.column_config.NumberColumn(f"{meta.label} [{meta.unit}]", format="%.8g") for key, meta in PROPERTIES.items()},
+    }
+    table_key = f"hm_editor_{st.session_state.hm_table_revision}"
+
+    def commit_table():
+        st.session_state.hm_rows = apply_table_edits(st.session_state.hm_rows, st.session_state[table_key])
+        st.session_state.hm_table_revision += 1
+
+    edited = st.data_editor(pd.DataFrame(st.session_state.hm_rows), num_rows="dynamic", use_container_width=True,
+                            column_config=configs, column_order=["name", "fraction", "role"] + (list(PROPERTIES) if show_all else fields),
+                            key=table_key, on_change=commit_table)
+    xi = st.session_state.hm_xi_value
+    if family == "elastic":
+        xi = st.number_input("Halpin–Tsai 几何参数 ξ（按方向、形貌或实验标定）", min_value=0.001, value=xi, key="hm_xi")
+        st.session_state.hm_xi_value = xi
+        st.caption("各向同性模型输出 K、G、E、ν；Halpin–Tsai 仅输出所选方向的 E。弹性零刚度孔隙尚不在本页模型范围内。")
+    try:
+        current = from_editor(edited.to_dict("records"), base, basis=basis, title=title,
+                              custom_name=custom_name, custom_unit=custom_unit)
+        signature = json_bytes({"project": project_dict(current), "family": family, "xi": xi})
+    except HomogenizationError as exc:
+        st.error(str(exc))
+        return
+    input_package = {**project_dict(current), "analysis": {"family": family, "xi": xi}}
+    st.download_button("下载输入工程 JSON", json_bytes(input_package), "compmodel_project.json", "application/json")
+    if st.button("计算有效性能", type="primary"):
+        st.session_state.hm_report = (signature, report_dict(current, family, xi))
+    saved = st.session_state.get("hm_report")
+    if not saved or saved[0] != signature:
+        if saved:
+            st.info("输入或模型参数已改变，请重新计算；旧结果已隐藏。")
+        return
+    report = saved[1]
+    st.subheader("模型结果")
+    st.caption("上下界依赖所述物理假设；模型之间的差异不是实验误差或置信区间。泊松比由每组 K、G 换算，不代表 ν 的上下界。")
+    st.write("实际体积分数", dict(zip([p.name for p in current.phases], report["volume_fractions"])))
+    table = pd.DataFrame(display_rows(report["results"], current))
+    st.dataframe(table, use_container_width=True, hide_index=True,
+                 column_config={"结果": st.column_config.NumberColumn(format="%.6g")})
+    for result in report["results"]:
+        with st.expander(result["model"] + (" · 不可用" if result["reason"] else " · " + result["kind"])):
+            st.code(result["formula"], language=None)
+            st.write(result["assumptions"])
+            if result["reason"]:
+                st.warning(result["reason"])
+    c1, c2 = st.columns(2)
+    c1.download_button("下载完整报告 JSON", json_bytes(report), "compmodel_report.json", "application/json")
+    c2.download_button("下载结果 CSV", table.to_csv(index=False).encode("utf-8-sig"), "compmodel_results.csv", "text/csv")
+
+    with st.expander("组成扫描", expanded=False):
+        target = st.selectbox("扫描相（体积分数 0 → 1）", range(len(current.phases)), format_func=lambda i: current.phases[i].name)
+        st.caption("其余相保持相互体积比；扫描始终以体积分数进行，包括质量分数输入的工程。")
+        points = st.slider("扫描点数", 11, 201, 51, step=10)
+        sweep_signature = (signature, target, points)
+        if st.button("运行组成扫描"):
+            try:
+                st.session_state.hm_sweep = (sweep_signature, sweep(current, family, target, points, xi))
+            except HomogenizationError as exc:
+                st.error(str(exc))
+        scan = st.session_state.get("hm_sweep")
+        if scan and scan[0] == sweep_signature:
+            keys = sorted({r["property"] for r in scan[1] if not r["reason"]})
+            if keys:
+                key = st.selectbox("绘图物理量", keys, format_func=lambda k: PROPERTIES[k].label)
+                chart = pd.DataFrame(display_sweep(scan[1], key))
+                st.caption(f"纵轴单位：{current.custom_unit if key == 'custom' else PROPERTIES[key].unit}")
+                st.line_chart(chart.pivot(index="体积分数", columns="模型", values="结果"))
+            failed = [r for r in scan[1] if r["reason"]]
+            if failed:
+                st.caption("部分模型在某些组成下不可用；完整扫描 CSV 保留原因。")
+            st.download_button("下载扫描 CSV（SI）", pd.DataFrame(scan[1]).to_csv(index=False).encode("utf-8-sig"), "compmodel_sweep.csv", "text/csv")
+
+    with st.expander("分级均匀化：将结果保存为有效相", expanded=False):
+        available = [r["model"] for r in report["results"] if not r["reason"]]
+        if available:
+            st.caption("显式选择模型后保存。来源工程、模型和参数随有效相记录；下一层假定尺度分离，不自动描述颗粒团聚形貌。")
+            model = st.selectbox("用于下一层的模型", available)
+            name = st.text_input("有效相名称", f"{current.title}（有效相）")
+            if st.button("保存有效相"):
+                if not name.strip():
+                    st.error("请输入有效相名称。")
+                else:
+                    phase = effective_phase(current, family, model, name.strip(), xi)
+                    st.session_state.hm_library.append(phase)
+                    st.rerun()
+            with st.expander("本层组成相的均匀化来源"):
+                st.json({p.name: p.provenance for p in current.phases if p.provenance})
+
+
 def main() -> None:
     st.set_page_config(
-        page_title="两相复合材料 CTE 计算器",
+        page_title="CompModel · 复合材料有效性能建模",
         page_icon="🔬",
         layout="wide",
         initial_sidebar_state="expanded",
     )
+    page = st.sidebar.radio("工作台", ["多相有效性能", "CTE / XRD 专用"], key="workspace")
+    if page == "多相有效性能":
+        render_modeling_workbench()
+        return
     _init_state()
     ui_style.inject_global_css()
 

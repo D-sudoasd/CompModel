@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "compcte"
-version = "0.1.0"
-description = "CompCTE — transparent two-phase composite CTE calculator (XRD-weighted phase CTE + multi-model)"
+version = "0.2.0"
+description = "CompModel — multiphase composite effective properties, hierarchical homogenization and XRD-weighted CTE"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

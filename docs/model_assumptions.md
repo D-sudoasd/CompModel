@@ -1,5 +1,7 @@
 # 两相复合 CTE 模型假设与适用范围
 
+此文档描述保留的 CTE / XRD 工作流。CompModel 多相弹性、输运及其他物性参见 [effective_properties.md](effective_properties.md)。
+
 ## 概念区分
 
 1. **晶面族晶格 CTE**（`alpha_hkl`）：由特定晶面间距随温度变化得到的方向性膨胀系数。

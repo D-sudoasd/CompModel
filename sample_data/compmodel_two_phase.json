@@ -1,0 +1,42 @@
+{
+  "format": "compmodel.project",
+  "schema_version": 1,
+  "phases": [
+    {
+      "name": "示例基体",
+      "fraction": 0.7,
+      "properties": {
+        "E": 70000000000.0,
+        "nu": 0.3,
+        "alpha": 2.3e-05,
+        "k": 200.0,
+        "sigma": 35000000.0,
+        "rho": 2700.0,
+        "cp": 900.0,
+        "custom": 2.0
+      },
+      "role": "matrix",
+      "provenance": {}
+    },
+    {
+      "name": "示例夹杂",
+      "fraction": 0.3,
+      "properties": {
+        "E": 400000000000.0,
+        "nu": 0.2,
+        "alpha": 4e-06,
+        "k": 100.0,
+        "sigma": 0.0,
+        "rho": 3200.0,
+        "cp": 750.0,
+        "custom": 8.0
+      },
+      "role": "inclusion",
+      "provenance": {}
+    }
+  ],
+  "basis": "volume",
+  "title": "两相教学示例（参数仅用于演示）",
+  "custom_name": "自定义系数",
+  "custom_unit": "1"
+}
