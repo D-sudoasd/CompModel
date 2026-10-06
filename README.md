@@ -47,7 +47,7 @@ Current models are scalar or isotropic analytical approximations. The original C
 
 **设计原则：计算过程透明、物理假设明确，不把单一模型包装成唯一材料性能。**
 
-公开名称升级为 CompModel，版本 0.2.0。当前 GitHub 仓库、安装包名 `compcte` 和内部导入路径 `cte_app` 保持兼容；无需重命名本地目录。
+公开名称升级为 CompModel，版本 0.2.0。GitHub 仓库已更名为 CompModel（旧地址 compcte 会自动跳转）；安装包名 `compcte` 和内部导入路径 `cte_app` 保持兼容；已有的本地目录无需重命名。
 
 | 建模对象 | 已实现模型 / 功能 |
 |---|---|
@@ -63,8 +63,8 @@ Current models are scalar or isotropic analytical approximations. The original C
 公式、参考资料和适用范围见 [多相建模说明](docs/effective_properties.md)。当前以标量和各向同性解析模型为主；张量、多场耦合、真实团聚形貌和有限元 RVE 尚未实现。
 
 ```bash
-git clone https://github.com/D-sudoasd/compcte.git
-cd compcte
+git clone https://github.com/D-sudoasd/CompModel.git
+cd CompModel
 py -3 -m pip install -r requirements.txt
 py -3 -m streamlit run app.py
 ```
@@ -82,8 +82,8 @@ py -3 -m streamlit run app.py
 ### 1. 获取代码
 
 ```bash
-git clone https://github.com/D-sudoasd/compcte.git
-cd compcte
+git clone https://github.com/D-sudoasd/CompModel.git
+cd CompModel
 ```
 
 或下载 ZIP 后解压整包（**不要只拷 `app.py`**，需保留 `cte_app/`、`requirements.txt` 等）。
@@ -151,7 +151,7 @@ py -3 -m streamlit run app.py
 ## 项目结构
 
 ```
-compcte/
+CompModel/
 ├── README.md                 ← 你在这里
 ├── LICENSE                   ← MIT
 ├── AGENTS.md                 ← 给协作者 / AI
