@@ -1,75 +1,29 @@
-<p align="center">
-  <img src="assets/readme/hero.png" width="100%" alt="CompModel — Compare effective-property models for multiphase composites / 比较多相复合材料的有效性能模型. Conceptual illustration / 概念插图。">
-</p>
-
 # CompModel
 
-**Compare effective-property models for multiphase composites**
+**从各组成相的性能、比例和形貌假设出发，比较复合材料有效性能。**
 
-**比较多相复合材料的有效性能模型**
+A Streamlit workbench for multiphase composite modeling: compare analytical models, scan composition, and reuse selected effective properties in a documented hierarchy. The original two-phase CTE / XRD workflow remains available.
 
-[Overview / 项目概览](#overview--项目概览) · [Start / 开始使用](#start--开始使用) · [Reference / 详细说明](#reference--详细说明)
+[首次安装](#换电脑--第一次使用3-步) · [开始建模](#开始建模) · [模型、单位与适用范围](docs/effective_properties.md) · [快速操作指南](docs/00_QUICKSTART.md)
 
-## Overview / 项目概览
+[![MIT](https://img.shields.io/badge/License-MIT-455A64)](LICENSE) [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB)](pyproject.toml)
 
-Start from constituent properties, fractions and explicit morphology assumptions to compare elastic, thermal and transport properties. Explore composition and reuse selected effective properties in a documented hierarchy.
-
-从组成相属性、比例与明确形貌假设出发，比较弹性、热学与输运性能，探索组成影响，并在保留来源记录的分级模型中复用所选有效性能。
-
-- **Multiple material properties** — 支持弹性、CTE、导热、导电、密度、比热与自定义标量。
-- **Model comparison** — 并列检查混合规则、上下界及球形夹杂模型。
-- **Reusable projects** — 保存工程、组成扫描与分级均匀化来源。
-
-## Start / 开始使用
-
-```powershell
-py -3 -m pip install -r requirements.txt
-py -3 -m streamlit run app.py
+```mermaid
+flowchart TD
+  A[组成相属性、单位和比例] --> B[明确体积分数与形貌假设]
+  B --> C[比较混合规则、上下界与夹杂模型]
+  C --> D[检查弹性、热学或输运有效性能]
+  D --> E[组成扫描或分级均匀化]
+  E --> F[JSON 工程与 CSV 结果]
 ```
 
-[Quick start / 快速开始](docs/00_QUICKSTART.md) · [Models / 模型说明](docs/effective_properties.md)
+| 要回答的问题 | 可选计算路径 |
+| --- | --- |
+| 相比例改变时弹性如何变化？ | Voigt / Reuss / Hill 与 Hashin–Shtrikman 边界 |
+| 球形夹杂或方向增强如何影响结果？ | 两相 Mori–Tanaka 或指定参数的 Halpin–Tsai |
+| 热膨胀、导热或导电怎样比较？ | 选择相应解析模型，并检查其假设 |
 
-Current models are scalar or isotropic analytical approximations. The original CTE/XRD workflow remains available; actual agglomerate geometry and finite-element RVE are outside the implemented scope.
-
-当前模型为标量或各向同性解析近似；原 CTE/XRD 流程继续保留，真实团聚形貌与有限元 RVE 尚未实现。
-
-*Cover: AI-generated conceptual illustration. 封面为 AI 生成的概念插图。*
-
-## Reference / 详细说明
-
-**Composite Effective Properties Modeling**
-**多相复合材料有效性能建模 · 原 CompCTE**
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-green.svg)](https://www.python.org/downloads/)
-
-本地 **Streamlit** 工具：从组成相的属性、比例及形貌假设出发，比较复合材料的弹性、热膨胀、导热、导电、密度、比热及自定义标量系数。支持多相、组成扫描和分级均匀化；原两相 **CTE / XRD** 专用流程继续保留。
-
-**设计原则：计算过程透明、物理假设明确，不把单一模型包装成唯一材料性能。**
-
-公开名称升级为 CompModel，版本 0.2.0。GitHub 仓库已更名为 CompModel（旧地址 compcte 会自动跳转）；安装包名 `compcte` 和内部导入路径 `cte_app` 保持兼容；已有的本地目录无需重命名。
-
-| 建模对象 | 已实现模型 / 功能 |
-|---|---|
-| 多相各向同性弹性 | Voigt、Reuss、Hill、Hashin–Shtrikman；输出 K、G、E、ν |
-| 颗粒 / 方向性增强 | 两相球形 Mori–Tanaka；指定 ξ 的 Halpin–Tsai 方向 E |
-| 热膨胀 | 多相 ROM、Parallel、Turner；两相 Kerner；原 XRD 表观相 CTE |
-| 导热 / 导电 | 算术、调和、几何规则，Hashin–Shtrikman 边界，两相 Maxwell |
-| 密度 / 比热 | 体积加权密度、质量加权比热 |
-| 自定义系数 | 显式名称和单位；算术、调和、几何混合 |
-| 组成 | 任意相数；质量分数按密度换为体积分数；严格输入校验 |
-| 研究工作流 | 组成扫描、有效相复用、分层来源记录、JSON 往返、CSV 导出、批处理 |
-
-公式、参考资料和适用范围见 [多相建模说明](docs/effective_properties.md)。当前以标量和各向同性解析模型为主；张量、多场耦合、真实团聚形貌和有限元 RVE 尚未实现。
-
-```bash
-git clone https://github.com/D-sudoasd/CompModel.git
-cd CompModel
-py -3 -m pip install -r requirements.txt
-py -3 -m streamlit run app.py
-```
-
----
+这些是标量或各向同性解析估计；模型间的差别需要结合材料形貌解释。公开名为 CompModel，安装包名 `compcte` 与内部模块 `cte_app` 保留兼容。
 
 ## 换电脑 / 第一次使用（3 步）
 
