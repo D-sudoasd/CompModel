@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/readme/hero.png" width="100%" alt="CompModel — Compare effective-property models for multiphase composites / 比较多相复合材料的有效性能模型. Conceptual illustration / 概念插图。">
+</p>
+
 # CompModel
 
 **从各组成相的性能、比例和形貌假设出发，比较复合材料有效性能。**
@@ -8,14 +12,12 @@ A Streamlit workbench for multiphase composite modeling: compare analytical mode
 
 [![MIT](https://img.shields.io/badge/License-MIT-455A64)](LICENSE) [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB)](pyproject.toml)
 
-```mermaid
-flowchart TD
-  A[组成相属性、单位和比例] --> B[明确体积分数与形貌假设]
-  B --> C[比较混合规则、上下界与夹杂模型]
-  C --> D[检查弹性、热学或输运有效性能]
-  D --> E[组成扫描或分级均匀化]
-  E --> F[JSON 工程与 CSV 结果]
-```
+<picture>
+  <source media="(max-width: 600px)" srcset="assets/readme/diagrams/workflow-readme-md-1-mobile.svg">
+  <img src="assets/readme/diagrams/workflow-readme-md-1.svg" width="100%" alt="CompModel — workflow schematic / 流程示意图">
+</picture>
+
+<sub>[Editable diagram source / 可编辑图源](assets/readme/diagrams/workflow-readme-md-1.mmd)</sub>
 
 | 要回答的问题 | 可选计算路径 |
 | --- | --- |
