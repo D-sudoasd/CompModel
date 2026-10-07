@@ -27,6 +27,18 @@ A Streamlit workbench for multiphase composite modeling: compare analytical mode
 
 这些是标量或各向同性解析估计；模型间的差别需要结合材料形貌解释。公开名为 CompModel，安装包名 `compcte` 与内部模块 `cte_app` 保留兼容。
 
+## 原理示意 / Principle schematic
+
+<p align="center">
+  <img src="assets/readme/principle.png" width="100%" alt="Constituent fractions and explicit composite morphology assumptions — conceptual schematic / 概念示意图">
+</p>
+
+*各相性能与体积分数在明确基体/夹杂等形貌假设下得到有效性能估计，模型间差别需结合适用条件解释。图中结构与曲线仅示意。*
+
+*Constituent properties and volume fractions support effective-property estimates under explicit matrix/inclusion or other morphology assumptions. Model differences require their applicability conditions; structures and curves are conceptual.*
+
+[查看完整示意图 / View full-size schematic](assets/readme/principle.png)
+
 ## 换电脑 / 第一次使用（3 步）
 
 ### 0. 环境要求
